@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>21 CFR Part 11 Data Integrity Programme — Nine Phases</title>
+<meta name="description" content="An illustrative nine-phase FDA 21 CFR Part 11 data integrity and computerised system validation programme for a fictitious US oral solid dose drug manufacturer.">
+<style>
+  :root {
+    --navy: #1F3A5F;
+    --navy-soft: #2E5183;
+    --bg: #FAF9F7;
+    --surface: #FFFFFF;
+    --surface-2: #F3F2EF;
+    --text: #16191D;
+    --text-muted: #5A626E;
+    --text-faint: #7C848F;
+    --border: #E1DFDA;
+    --border-strong: #CFCCC5;
+    --accent: var(--navy);
+    --accent-text: #FFFFFF;
+    --rule: #1F3A5F;
+    --warn-bg: #F5F1E8;
+    --warn-border: #D9CFB4;
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --maxw: 68rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #101317;
+      --surface: #171B21;
+      --surface-2: #1D222A;
+      --text: #E6E8EC;
+      --text-muted: #A0A8B4;
+      --text-faint: #848C98;
+      --border: #2A303A;
+      --border-strong: #3A4250;
+      --accent: #8FB3DC;
+      --accent-text: #0E1116;
+      --rule: #4E7BB4;
+      --warn-bg: #1C1F25;
+      --warn-border: #3A4250;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: currentColor; }
+
+  code, .mono {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.05em 0.35em;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+
+  /* ---------- header ---------- */
+
+  header.masthead {
+    border-top: 5px solid var(--rule);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .masthead-inner { padding: 3rem 0 2.25rem; }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    font-weight: 600;
+    margin: 0 0 0.9rem;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.85rem, 4.6vw, 3rem);
+    line-height: 1.14;
+    letter-spacing: -0.012em;
+    margin: 0 0 1rem;
+    max-width: 24ch;
+  }
+
+  .standfirst {
+    font-size: clamp(1rem, 1.9vw, 1.14rem);
+    color: var(--text-muted);
+    max-width: 62ch;
+    margin: 0 0 1.6rem;
+  }
+
+  .disclaimer {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-left: 3px solid var(--rule);
+    border-radius: 2px;
+    padding: 0.95rem 1.15rem;
+    font-size: 0.93rem;
+    color: var(--text-muted);
+    max-width: 72ch;
+    margin: 0;
+  }
+
+  .disclaimer strong { color: var(--text); }
+
+  /* ---------- stat tiles ---------- */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 2.5rem 0 0;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 1.25rem 1.1rem;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    margin-top: 0.45rem;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- sections ---------- */
+
+  section { padding: 3.25rem 0 0; }
+  section:last-of-type { padding-bottom: 3.5rem; }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+    font-weight: 600;
+    letter-spacing: -0.008em;
+    margin: 0 0 0.35rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  .section-note {
+    font-size: 0.93rem;
+    color: var(--text-muted);
+    margin: 0.9rem 0 1.5rem;
+    max-width: 68ch;
+  }
+
+  /* ---------- tables ---------- */
+
+  .scroller {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: var(--surface);
+    max-width: 100%;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 40rem;
+    font-size: 0.9rem;
+  }
+
+  thead th {
+    text-align: left;
+    font-size: 0.7rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    font-weight: 700;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border-strong);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td { border-bottom: 0; }
+
+  td.num {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    width: 3.2rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  td.phase-title { min-width: 13rem; }
+  td.phase-title a { font-weight: 600; }
+
+  td.vantage {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  td.hook { color: var(--text-muted); min-width: 22rem; }
+  td.hook strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- findings ---------- */
+
+  ol.findings { list-style: none; margin: 0; padding: 0; counter-reset: f; }
+
+  ol.findings li {
+    counter-increment: f;
+    position: relative;
+    padding: 1.05rem 0 1.05rem 3.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  ol.findings li:last-child { border-bottom: 0; }
+
+  ol.findings li::before {
+    content: counter(f, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    padding: 0.12rem 0.4rem;
+    background: var(--surface-2);
+  }
+
+  ol.findings .finding-text { display: block; }
+
+  ol.findings .ref {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+  }
+
+  /* ---------- positions ---------- */
+
+  .positions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .position {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.15rem 1.2rem 1.25rem;
+  }
+
+  .position h3 {
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 0.55rem;
+    color: var(--text);
+  }
+
+  .position p {
+    margin: 0 0 0.75rem;
+    font-size: 0.89rem;
+    color: var(--text-muted);
+  }
+
+  .position .cite {
+    margin: 0;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-faint);
+  }
+
+  .position .cite span { color: var(--text-muted); }
+
+  blockquote.closing {
+    margin: 2rem 0 0;
+    padding: 1.25rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--rule);
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--text);
+  }
+
+  blockquote.closing cite {
+    display: block;
+    margin-top: 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-style: normal;
+    color: var(--text-faint);
+  }
+
+  /* ---------- footer ---------- */
+
+  footer {
+    margin-top: 3.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    padding: 2.25rem 0 3rem;
+  }
+
+  footer p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    max-width: 76ch;
+    margin: 0 0 0.9rem;
+  }
+
+  footer p:last-child { margin-bottom: 0; }
+  footer strong { color: var(--text); }
+
+  @media (max-width: 40rem) {
+    .wrap { padding: 0 1.1rem; }
+    .masthead-inner { padding: 2.25rem 0 1.75rem; }
+    ol.findings li { padding-left: 2.9rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <p class="eyebrow">Illustrative portfolio sample &middot; Nine phases &middot; 2026&ndash;2027</p>
+    <h1>A 21 CFR Part 11 Data Integrity Programme, in Nine Phases</h1>
+    <p class="standfirst">
+      An end-to-end FDA 21&nbsp;CFR Part&nbsp;11 data integrity and computerised system validation
+      programme, run for a US oral solid dose drug manufacturer from a Form FDA 483 through to close-out
+      &mdash; four hundred and twenty-four days, nine published phases, and a determination made record type
+      by record type rather than asserted once.
+    </p>
+    <p class="disclaimer">
+      <strong>Helix Pharma, Inc. is fictional.</strong> Its sites, its people, its systems, its inspection,
+      its Form FDA 483 and <strong>every figure here is illustrative</strong>.
+      <strong>The regulations, guidances and standards are real</strong>, are cited exactly, and can be
+      looked up &mdash; 21&nbsp;CFR Parts 11, 210, 211 and 820, FDA&rsquo;s August 2003 <em>Scope and
+      Application</em> guidance, FDA&rsquo;s December 2018 drug CGMP data integrity questions and answers,
+      EU GMP Annex&nbsp;11, GAMP&nbsp;5, MHRA, PIC/S and NIST SP 800-53. The two kinds of statement are kept
+      visibly apart throughout. <strong>Nothing here is advice.</strong>
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">9</div>
+        <div class="stat-label">published phases, 2026-05-29 to 2027-04-30</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">61</div>
+        <div class="stat-label">systems holding at least one Part&nbsp;11 record</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">671</div>
+        <div class="stat-label">control positions &mdash; eleven paragraphs on sixty-one systems</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">252</div>
+        <div class="stat-label">entries across the four programme registers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">22</div>
+        <div class="stat-label">of them closed in nine phases</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="wrap" aria-labelledby="scenario-h">
+    <h2 id="scenario-h">The scenario</h2>
+    <p class="section-note">
+      FDA conducted a routine CGMP surveillance inspection of the Ridgemont, New Jersey site from
+      2026-02-02 to 2026-02-13 &mdash; twelve calendar days &mdash; and at the close issued a
+      <strong>Form FDA 483 carrying seven inspectional observations, of which three concern electronic
+      records</strong>: audit trail review in the QC laboratory, attribution of entries on a packaging line
+      system, and a change to an approved value in the electronic batch record. Helix filed a written
+      response with FDA on 2026-03-06, twenty-one calendar days after issue and exactly fifteen business
+      days. The programme was funded seventeen days after the 483, kicked off on 2026-03-02 and closed out
+      on 2027-04-30. A Form FDA 483 is not a final agency determination; no Warning Letter, Untitled Letter
+      or judicial action exists, and no document in this repository reaches a legal conclusion of any kind.
+    </p>
+  </section>
+
+  <section class="wrap" aria-labelledby="phases-h">
+    <h2 id="phases-h">The nine phases</h2>
+    <p class="section-note">
+      Each phase speaks as at a stated vantage date, and nothing after that date is reported as an outcome.
+      One line each &mdash; the thing the phase establishes that no other phase does.
+    </p>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Phase</th>
+            <th scope="col">Vantage</th>
+            <th scope="col">The one thing it establishes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">01</td>
+            <td class="phase-title"><a href="../01-program-foundation-and-regulatory-scoping/">Programme Foundation and Regulatory Scoping</a></td>
+            <td class="vantage">2026-05-29</td>
+            <td class="hook"><strong>Two of the four instruments assessed do not reach Helix at all</strong> &mdash; and one of the two is the one the industry most often assumes does.</td>
+          </tr>
+          <tr>
+            <td class="num">02</td>
+            <td class="phase-title"><a href="../02-the-system-inventory-and-part-11-applicability/">The System Inventory and Part 11 Applicability</a></td>
+            <td class="vantage">2026-07-31</td>
+            <td class="hook"><strong>Part 11 scope is a property of records, applied fifty-eight times rather than asserted once</strong> &mdash; and nobody at Helix had ever written the determination down.</td>
+          </tr>
+          <tr>
+            <td class="num">03</td>
+            <td class="phase-title"><a href="../03-data-integrity-risk-assessment-and-the-alcoa-attributes/">Data Integrity Risk Assessment and the ALCOA Attributes</a></td>
+            <td class="vantage">2026-09-30</td>
+            <td class="hook"><strong>An attribute nobody can determine is not a low score.</strong> Forty-seven of the one hundred and twenty-one pairs are carried unscored rather than rated.</td>
+          </tr>
+          <tr>
+            <td class="num">04</td>
+            <td class="phase-title"><a href="../04-the-validation-framework-and-policy-architecture/">The Validation Framework and Policy Architecture</a></td>
+            <td class="vantage">2026-11-30</td>
+            <td class="hook"><strong><code>21 CFR 11.10(a)</code> has four clauses and the fourth is the one nobody evidences</strong> &mdash; the ability to discern invalid or altered records.</td>
+          </tr>
+          <tr>
+            <td class="num">05</td>
+            <td class="phase-title"><a href="../05-access-audit-trails-and-electronic-signatures/">Access, Audit Trails and Electronic Signatures</a></td>
+            <td class="vantage">2027-01-29</td>
+            <td class="hook"><strong>A control can be present and required by nothing.</strong> Of the five hundred and twenty positions met, two hundred and eighteen are held in place by no procedure.</td>
+          </tr>
+          <tr>
+            <td class="num">06</td>
+            <td class="phase-title"><a href="../06-the-chromatography-data-system/">The Chromatography Data System</a></td>
+            <td class="vantage">2027-02-26</td>
+            <td class="hook"><strong>Beginning to review the audit trail would not, by itself, have reached the act.</strong> Two of the classes that record a change to a reportable result cannot be enabled at all.</td>
+          </tr>
+          <tr>
+            <td class="num">07</td>
+            <td class="phase-title"><a href="../07-the-data-lifecycle-backup-archive-and-the-paper-question/">The Data Lifecycle: Backup, Archive and the Paper Question</a></td>
+            <td class="vantage">2027-03-19</td>
+            <td class="hook"><strong>A retention period is derived from the predicate rule or it does not exist.</strong> For fourteen of the thirty-four in-scope record types nothing supplies one.</td>
+          </tr>
+          <tr>
+            <td class="num">08</td>
+            <td class="phase-title"><a href="../08-periodic-review-internal-audit-and-the-483-response/">Periodic Review, Internal Audit and the 483 Response</a></td>
+            <td class="vantage">2027-04-09</td>
+            <td class="hook"><strong>An observation is disposed of by stating the condition&rsquo;s present position, never by stating that it is closed</strong> &mdash; and the commitments filed with FDA are read against their own words for the first time.</td>
+          </tr>
+          <tr>
+            <td class="num">09</td>
+            <td class="phase-title"><a href="../09-inspection-readiness-and-continuous-compliance/">Inspection Readiness, Continuous Compliance and Close-Out</a></td>
+            <td class="vantage">2027-04-30</td>
+            <td class="hook"><strong>Readiness is the ability to answer, not the quality of the answer.</strong> The charter scores three met and five not met.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="findings-h">
+    <h2 id="findings-h">Headline findings</h2>
+    <p class="section-note">
+      Ten, one sentence each, drawn from the phase that owns the figure.
+    </p>
+    <ol class="findings">
+      <li>
+        <span class="finding-text">No written Part&nbsp;11 applicability determination existed anywhere in Helix&rsquo;s quality system &mdash; not in a validation plan, not in the system inventory, not in a policy, not in an SOP &mdash; and no procedure required one to exist.</span>
+        <span class="ref">Phase 02 &middot; 02.10 &middot; IS-02</span>
+      </li>
+      <li>
+        <span class="finding-text">The IT register carried two hundred and fourteen entries; the physical walk found seventeen systems the register did not have and nine entries for systems that no longer exist, and the drift ran in both directions at once.</span>
+        <span class="ref">Phase 02 &middot; 02.02 &middot; ADR-0009</span>
+      </li>
+      <li>
+        <span class="finding-text">Forty-seven of the one hundred and twenty-one record-type-and-system pairs carried at least one attribute Helix could not determine at all, and were carried unscored rather than given a low rating.</span>
+        <span class="ref">Phase 03 &middot; 03.08 &middot; ADR-0018</span>
+      </li>
+      <li>
+        <span class="finding-text"><code>21 CFR 11.10(a)</code>&rsquo;s fourth clause &mdash; the ability to discern invalid or altered records &mdash; is evidenced by none of the forty-four validation packages Helix holds, and seventeen systems hold no package at all.</span>
+        <span class="ref">Phase 04 &middot; 04.07 &middot; IS-22, IS-23</span>
+      </li>
+      <li>
+        <span class="finding-text">Of the five hundred and twenty control positions determined met, two hundred and eighteen are met by a configuration nothing requires &mdash; and a control nobody requires can be turned off tomorrow without a deviation.</span>
+        <span class="ref">Phase 05 &middot; 05.09 &middot; ADR-0031</span>
+      </li>
+      <li>
+        <span class="finding-text">Nineteen systems execute electronic signatures and all nineteen show the printed name, the date and time and the meaning on screen; on the exported or printed form the meaning is absent on twelve of them, and Helix had only ever checked the screen.</span>
+        <span class="ref">Phase 05 &middot; 05.06 &middot; ADR-0032</span>
+      </li>
+      <li>
+        <span class="finding-text">Of the eleven auditable event classes that record an act capable of changing a reportable result, three are recorded on neither chromatography instance &mdash; and two of those three cannot be enabled on the product version Helix runs at all.</span>
+        <span class="ref">Phase 06 &middot; 06.06 &middot; IS-36</span>
+      </li>
+      <li>
+        <span class="finding-text">Nine of the thirty-eight reprocessed results carry a reported value that differs from the value the first integration produced, and on none of the nine does the record show both values.</span>
+        <span class="ref">Phase 06 &middot; 06.07 &middot; IS-38</span>
+      </li>
+      <li>
+        <span class="finding-text">The electronic master production and control record &mdash; the document every batch is made against &mdash; has a retention period set by nothing, because <code>21 CFR 211.180(a)</code> reaches records specifically associated with a batch and the master is associated with all of them.</span>
+        <span class="ref">Phase 07 &middot; 07.04 &middot; IS-45</span>
+      </li>
+      <li>
+        <span class="finding-text">The shared account was still in use on the packaging line system FDA observed at the Phase&nbsp;05 vantage, three hundred and fifty days after the 483 was issued, and on eight further systems.</span>
+        <span class="ref">Phase 08 &middot; 08.06 &middot; IS-56</span>
+      </li>
+    </ol>
+
+    <blockquote class="closing">
+      The programme met every objective that was in its own gift and missed every objective that required
+      anything outside it to change. Three met, five not met &mdash; and not one of the four objectives
+      requiring the estate to change is among the three.
+      <cite>Phase 09 &middot; 09.03 &middot; IS-60</cite>
+    </blockquote>
+  </section>
+
+  <section class="wrap" aria-labelledby="argues-h">
+    <h2 id="argues-h">What this repository argues</h2>
+    <p class="section-note">
+      Seven positions hold across all nine phases. Each is argued at length in exactly one chapter and cited
+      from everywhere else.
+    </p>
+    <ul class="positions">
+      <li class="position">
+        <h3>Part 11 applies to records, not to systems</h3>
+        <p>A system is in scope because of the records it holds, and no document here writes &ldquo;a Part 11 system&rdquo; without saying which record types make it one.</p>
+        <p class="cite"><span><code>21 CFR 11.1(b)</code></span> &mdash; the part applies to records in electronic form created, modified, maintained, archived, retrieved or transmitted under any records requirements set forth in agency regulations. ADR-0001.</p>
+      </li>
+      <li class="position">
+        <h3>The predicate rule does the work</h3>
+        <p>Every one of the four categories FDA&rsquo;s narrow interpretation reaches starts from a record some other regulation already required to exist. Remove the predicate rule and there is no Part 11 record.</p>
+        <p class="cite"><span>FDA&rsquo;s August 2003 <em>Scope and Application</em> guidance</span> &mdash; records not required to be retained under predicate rules, but nonetheless maintained electronically, are not part 11 records.</p>
+      </li>
+      <li class="position">
+        <h3>Enforcement discretion is a stated intention, not an exemption</h3>
+        <p>It is not a legal exemption and not a safe harbour, and it confers no rights. Every row that shows discretion on the Part 11 side shows an unmoved obligation on the predicate-rule side.</p>
+        <p class="cite"><span>The August 2003 guidance</span> &mdash; persons must still comply with all applicable predicate rule requirements for validation &mdash; read against <span><code>21 CFR 211.68</code></span>, over which no discretion has been announced. ADR-0003.</p>
+      </li>
+      <li class="position">
+        <h3>The printout route has three conditions and is not an escape hatch</h3>
+        <p>Two FDA states expressly and a third Helix derives; they are conjunctive, and for a dynamic record the first of them generally fails. The set of three is never attributed to FDA&rsquo;s text.</p>
+        <p class="cite"><span>The August 2003 guidance&rsquo;s printout passage</span>, read against <span><code>21 CFR 211.194(a)(4)</code></span>. ADR-0010.</p>
+      </li>
+      <li class="position">
+        <h3>A determination is not a control, and a control is not validation</h3>
+        <p>Determining that Part 11 reaches a record says nothing about whether the record is any good; assessing that a control is present is not evidence that the system was validated.</p>
+        <p class="cite"><span><code>21 CFR 11.10(a)</code></span> &mdash; validation of systems to ensure accuracy, reliability, consistent intended performance, and the ability to discern invalid or altered records. ADR-0029, ADR-0034.</p>
+      </li>
+      <li class="position">
+        <h3>A disposition is not a closure</h3>
+        <p>An observation is disposed of by stating the condition&rsquo;s present position. Closure is a representation about a matter between a firm and an agency, and the firm is one of two parties to it.</p>
+        <p class="cite"><span>FDA&rsquo;s own statement</span> &mdash; the FDA Form 483 does not constitute a final agency determination of whether any condition is in violation of the FD&amp;C Act or any of its relevant regulations. ADR-0051.</p>
+      </li>
+      <li class="position">
+        <h3>Readiness is the ability to answer, not the quality of the answer</h3>
+        <p>In February 2026 Helix could not say which of its records were Part 11 records, which systems held them, or what its control position was. It can now answer all three, and many of the answers are <em>not met</em>.</p>
+        <p class="cite"><span>A readiness position is not a compliance position</span>, and no compliance conclusion is stated anywhere in this repository. ADR-0059.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="wrap" aria-labelledby="refusal-h">
+    <h2 id="refusal-h">And one refusal, held for eight phases</h2>
+    <p class="section-note">
+      Four internal audits between 2023-06 and 2025-09 covered the three systems the observations concern
+      &mdash; each system falling inside the scope of at least two &mdash; and none raised a finding on the
+      subject matter of any of them. The question was raised on 2026-05-19, <strong>carried open and
+      unweighted for eight phases</strong>, and <strong>closed at Phase 08 on what the programme could
+      establish, without any of the four candidate explanations being chosen</strong>. No candidate is
+      named, numbered, ranked or alluded to in the phase in which it closes, or anywhere else. The refusal
+      is permanent.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>
+      <strong>Helix Pharma, Inc. is fictional.</strong> Its sites, its people, its systems, its inspection,
+      its Form FDA 483, its programme, its money and every figure on this page are invented and
+      illustrative. <strong>The regulations, guidances and standards are real and are cited exactly</strong>,
+      and where a statement is made about one it can be checked against the source.
+    </p>
+    <p>
+      <strong>There is no Part 11 certification, no Part 11 certificate, and no FDA-approved or
+      FDA-validated software.</strong> FDA does not certify electronic systems and does not pre-evaluate
+      them for Part 11 compliance. No system, vendor or product is described here as certified, approved or
+      validated by any agency.
+    </p>
+    <p>
+      <strong>No observation is closed or described as closed. Nothing here states that Helix is ready or
+      that Helix is compliant, and nothing forecasts what any future inspection would find.</strong> No
+      fine, penalty, sanction or forfeiture amount appears anywhere, because none exists.
+      <strong>Nothing in this repository is advice.</strong>
+    </p>
+    <p>
+      Repository <code>pharma-21cfr-part11-data-integrity</code> &middot; nine phases &middot; vantages
+      2026-05-29 to 2027-04-30 &middot; <a href="DASHBOARD.md">every fixed figure, on one page</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
